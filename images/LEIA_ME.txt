@@ -1,1 +1,4 @@
-Coloque suas imagens (como welding-pipe.jpg) dentro desta pasta para organizar seu projeto.
+Coloque suas imagens dentro desta pasta para organizar seu projeto.
+
+Arquivos esperados:
+- servicos-de-soldadura.jpg (Imagem para a área de Soldadura)

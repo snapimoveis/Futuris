@@ -36,7 +36,7 @@ const BusinessAreas: React.FC = () => {
       id: 'servicos-de-soldadura',
       title: t.businessAreasList.welding.title,
       icon: <Flame size={40} />,
-      img: '/images/welding-pipe.jpg', // Updated to point to the new images folder
+      img: '/images/servicos-de-soldadura.jpg', // Updated to match section ID
       description: t.businessAreasList.welding.description,
       points: t.businessAreasList.welding.points
     },
