@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Hexagon } from 'lucide-react';
 import LanguageSelector from './LanguageSelector';
 
 const Header: React.FC = () => {
   const { currentLang, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,11 +36,23 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         {/* Logo */}
         <Link to={`/${currentLang}`} className="flex items-center z-50">
-          <img 
-            src="https://ugc.production.linktr.ee/821262d0-083b-4876-b333-6a56f0821c3c_Logo-Futuris---Slogan.png" 
-            alt="FUTURIS" 
-            className="h-14 w-auto object-contain bg-white/10 rounded-sm p-1 backdrop-blur-sm"
-          />
+          {!logoError ? (
+            <img 
+              src="/logo.png" 
+              alt="FUTURIS" 
+              className="h-14 w-auto object-contain"
+              onError={() => setLogoError(true)}
+            />
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="bg-corporate-accent/10 p-2 rounded-sm border border-corporate-accent/20">
+                <Hexagon className="text-corporate-accent" size={28} strokeWidth={2} />
+              </div>
+              <div className="flex flex-col justify-center">
+                <span className="text-2xl font-bold text-white tracking-tight leading-none">FUTURIS</span>
+              </div>
+            </div>
+          )}
         </Link>
 
         {/* Desktop Nav */}

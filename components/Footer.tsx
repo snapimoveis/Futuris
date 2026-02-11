@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Link } from 'react-router-dom';
-import { Linkedin, Twitter, Mail, MapPin, Phone } from 'lucide-react';
+import { Linkedin, Twitter, Mail, MapPin, Phone, Hexagon } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const { currentLang, t } = useLanguage();
+  const [logoError, setLogoError] = useState(false);
 
   return (
     <footer className="bg-corporate-black border-t border-zinc-900 pt-16 pb-8">
@@ -13,11 +14,21 @@ const Footer: React.FC = () => {
         {/* Brand */}
         <div>
           <div className="mb-6">
-            <img 
-              src="https://ugc.production.linktr.ee/821262d0-083b-4876-b333-6a56f0821c3c_Logo-Futuris---Slogan.png" 
-              alt="FUTURIS" 
-              className="h-16 w-auto object-contain bg-white/5 rounded-sm p-1" 
-            />
+            {!logoError ? (
+              <img 
+                src="/logo.png" 
+                alt="FUTURIS" 
+                className="h-16 w-auto object-contain"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <div className="flex items-center gap-3">
+                <div className="bg-zinc-900 p-2 rounded-sm border border-zinc-800">
+                   <Hexagon className="text-corporate-accent" size={32} strokeWidth={2} />
+                </div>
+                <span className="text-2xl font-bold text-white tracking-tight">FUTURIS</span>
+              </div>
+            )}
           </div>
           <p className="text-zinc-500 text-sm leading-relaxed mb-6">
             {t.company.description}
