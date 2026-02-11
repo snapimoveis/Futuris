@@ -1,0 +1,1 @@
+Coloque suas imagens (como welding-pipe.jpg) dentro desta pasta para organizar seu projeto.

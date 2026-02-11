@@ -36,7 +36,7 @@ const BusinessAreas: React.FC = () => {
       id: 'servicos-de-soldadura',
       title: t.businessAreasList.welding.title,
       icon: <Flame size={40} />,
-      img: 'https://picsum.photos/id/60/800/600',
+      img: '/images/welding-pipe.jpg', // Updated to point to the new images folder
       description: t.businessAreasList.welding.description,
       points: t.businessAreasList.welding.points
     },
