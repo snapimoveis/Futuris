@@ -21,9 +21,6 @@ const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-        <div className="inline-block mb-4 px-3 py-1 border border-zinc-600 rounded-full bg-zinc-900/50 backdrop-blur-sm">
-           <span className="text-xs uppercase tracking-widest text-corporate-light font-semibold">ISO 9001:2015 Certified</span>
-        </div>
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 leading-tight">
           {t.hero.title}
         </h1>
