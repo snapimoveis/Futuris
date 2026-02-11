@@ -7,6 +7,12 @@ const BusinessAreas: React.FC = () => {
   const { t, currentLang } = useLanguage();
   const { area } = useParams<{ area?: string }>();
 
+  // Function to handle image loading errors (fallback to placeholder)
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = 'https://picsum.photos/id/119/800/600'; // Fallback generic industrial image
+    e.currentTarget.onerror = null; // Prevent infinite loop
+  };
+
   const areas = [
     {
       id: 'calderaria',
@@ -36,7 +42,7 @@ const BusinessAreas: React.FC = () => {
       id: 'servicos-de-soldadura',
       title: t.businessAreasList.welding.title,
       icon: <Flame size={40} />,
-      img: '/images/servicos-de-soldadura.jpg', // Updated to match section ID
+      img: '/images/servicos-de-soldadura.jpg', // Path now refers to public/images/servicos-de-soldadura.jpg
       description: t.businessAreasList.welding.description,
       points: t.businessAreasList.welding.points
     },
@@ -65,7 +71,12 @@ const BusinessAreas: React.FC = () => {
     return (
       <div className="pt-24 pb-16">
         <div className="relative h-96 w-full overflow-hidden">
-             <img src={selectedArea.img} alt={selectedArea.title} className="w-full h-full object-cover grayscale opacity-50" />
+             <img 
+               src={selectedArea.img} 
+               alt={selectedArea.title} 
+               onError={handleImageError}
+               className="w-full h-full object-cover grayscale opacity-50" 
+             />
              <div className="absolute inset-0 bg-gradient-to-t from-corporate-dark to-transparent"></div>
              <div className="absolute bottom-0 left-0 p-8 md:p-16 max-w-7xl mx-auto w-full">
                 <Link to={`/${currentLang}/areas-de-negocio`} className="text-zinc-400 hover:text-white mb-4 block text-sm">&larr; {t.businessAreasPage.back}</Link>
@@ -126,6 +137,7 @@ const BusinessAreas: React.FC = () => {
               <img 
                 src={item.img} 
                 alt={item.title} 
+                onError={handleImageError}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0 opacity-40 group-hover:opacity-60"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-corporate-black via-corporate-black/80 to-transparent"></div>

@@ -1,0 +1,4 @@
+IMPORTANTE:
+Mova o arquivo 'servicos-de-soldadura.jpg' para ESTA pasta (public/images).
+
+Em projetos React/Vite, arquivos estáticos devem ficar dentro da pasta 'public' para serem acessíveis pelo navegador através de caminhos como '/images/arquivo.jpg'.
