@@ -1,5 +1,12 @@
 {
   "name": "FUTURIS Industrial",
   "description": "A modern, multi-language corporate website for an industrial engineering company featuring a dark aesthetic and robust service showcase.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "clientLogos": [
+    "/images/clients/metalaym.png",
+    "/images/clients/angelmir-doors.png",
+    "/images/clients/calderitech.png",
+    "/images/clients/attsu.png",
+    "/images/clients/influisa.png"
+  ]
 }

@@ -1,0 +1,11 @@
+Coloque os logotipos dos clientes nesta pasta.
+
+Para que funcionem corretamente, adicione os seguintes arquivos (preferencialmente PNG com fundo transparente):
+
+1. metalaym.png
+2. angelmir-doors.png
+3. calderitech.png
+4. attsu.png
+5. influisa.png
+
+Se o arquivo não for encontrado, o site mostrará o nome do cliente em texto.
