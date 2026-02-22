@@ -6,12 +6,14 @@ import { ArrowRight } from 'lucide-react';
 const Hero: React.FC = () => {
   const { t, currentLang } = useLanguage();
   const [heroImage, setHeroImage] = useState<string | null>(null);
+  const [heroSubtitle, setHeroSubtitle] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/settings')
       .then(res => res.json())
       .then(data => {
         if (data.heroImage) setHeroImage(data.heroImage);
+        if (data.heroSubtitle) setHeroSubtitle(data.heroSubtitle);
       })
       .catch(err => console.error("Failed to load settings", err));
   }, []);
@@ -36,7 +38,7 @@ const Hero: React.FC = () => {
           {t.hero.title}
         </h1>
         <p className="text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-          {t.hero.subtitle}
+          {heroSubtitle || t.hero.subtitle}
         </p>
         <Link 
           to={`/${currentLang}/areas-de-negocio`}

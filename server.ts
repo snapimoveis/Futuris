@@ -41,7 +41,15 @@ if (!fs.existsSync(DB_FILE)) {
     },
     settings: {
       logo: null,
-      heroImage: null
+      heroImage: null,
+      heroSubtitle: null,
+      stats: {
+        countries: '4+',
+        projects: '200+',
+        safety: '98%',
+        engineers: '500+',
+        support: '24/7'
+      }
     },
     jobs: [],
     applications: []
@@ -227,6 +235,17 @@ app.post('/api/settings', authenticateToken, upload.fields([{ name: 'logo', maxC
   if (files && files['heroImage']) {
     db.settings.heroImage = `/uploads/${files['heroImage'][0].filename}`;
   }
+  
+  if (req.body.heroSubtitle) {
+    db.settings.heroSubtitle = req.body.heroSubtitle;
+  }
+
+  if (!db.settings.stats) db.settings.stats = {};
+  if (req.body.stats_countries) db.settings.stats.countries = req.body.stats_countries;
+  if (req.body.stats_projects) db.settings.stats.projects = req.body.stats_projects;
+  if (req.body.stats_safety) db.settings.stats.safety = req.body.stats_safety;
+  if (req.body.stats_engineers) db.settings.stats.engineers = req.body.stats_engineers;
+  if (req.body.stats_support) db.settings.stats.support = req.body.stats_support;
   
   saveDb(db);
   res.json(db.settings);

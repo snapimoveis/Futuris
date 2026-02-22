@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Download } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -243,19 +244,21 @@ const Dashboard: React.FC = () => {
               <h2 className="text-2xl font-bold mb-6">Candidaturas de Empleo</h2>
               <ul className="space-y-4">
                 {applications.map((app: any) => (
-                  <li key={app.id} className="border p-4 rounded bg-white">
-                    <div className="flex justify-between items-start">
+                  <li key={app.id} className="border p-4 rounded bg-white shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-center">
                       <div>
-                        <div className="font-bold text-lg">{app.firstName} {app.lastName}</div>
-                        <div className="text-gray-600">{app.email}</div>
-                        <div className="text-sm text-gray-400 mt-1">{new Date(app.date).toLocaleString('es-ES')}</div>
+                        <div className="font-bold text-lg text-gray-800">{app.firstName} {app.lastName}</div>
+                        <div className="text-gray-600 mb-1">{app.email}</div>
+                        <div className="text-sm text-gray-500">
+                          <span className="font-medium">Fecha:</span> {new Date(app.date).toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' })}
+                        </div>
                       </div>
                       <a 
                         href={app.cvPath} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+                        download
+                        className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-medium transition-colors"
                       >
+                        <Download size={16} />
                         Descargar CV
                       </a>
                     </div>
@@ -389,6 +392,42 @@ const Dashboard: React.FC = () => {
                   )}
                   <label className="block text-sm font-medium mb-1">Subir Nueva Imagen Principal</label>
                   <input name="heroImage" type="file" accept="image/*" className="border p-2 rounded w-full bg-white" />
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded border">
+                  <h3 className="font-semibold mb-4">Subtítulo Principal</h3>
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-500 mb-2">Subtítulo Actual:</p>
+                    <p className="p-2 bg-gray-200 rounded">{settings.heroSubtitle || 'Default Subtitle'}</p>
+                  </div>
+                  <label className="block text-sm font-medium mb-1">Nuevo Subtítulo</label>
+                  <input name="heroSubtitle" type="text" placeholder="Ingrese el nuevo subtítulo" className="border p-2 rounded w-full bg-white" />
+                </div>
+
+                <div className="bg-gray-50 p-6 rounded border">
+                  <h3 className="font-semibold mb-4">Estadísticas del Sitio</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Países Servidos</label>
+                      <input name="stats_countries" defaultValue={settings.stats?.countries || '4+'} className="border p-2 rounded w-full bg-white" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Proyectos</label>
+                      <input name="stats_projects" defaultValue={settings.stats?.projects || '200+'} className="border p-2 rounded w-full bg-white" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Seguridad</label>
+                      <input name="stats_safety" defaultValue={settings.stats?.safety || '98%'} className="border p-2 rounded w-full bg-white" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Ingenieros</label>
+                      <input name="stats_engineers" defaultValue={settings.stats?.engineers || '500+'} className="border p-2 rounded w-full bg-white" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Soporte</label>
+                      <input name="stats_support" defaultValue={settings.stats?.support || '24/7'} className="border p-2 rounded w-full bg-white" />
+                    </div>
+                  </div>
                 </div>
 
                 <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Configuración</button>

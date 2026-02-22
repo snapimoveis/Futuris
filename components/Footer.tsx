@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Link } from 'react-router-dom';
-import { Linkedin, Twitter, Mail, MapPin, Phone, Hexagon } from 'lucide-react';
+import { Linkedin, Facebook, Instagram, Mail, MapPin, Phone, Hexagon } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const { currentLang, t } = useLanguage();
@@ -55,7 +55,8 @@ const Footer: React.FC = () => {
           </p>
           <div className="flex space-x-4">
             <a href="#" className="text-zinc-500 hover:text-white transition-colors"><Linkedin size={20} /></a>
-            <a href="#" className="text-zinc-500 hover:text-white transition-colors"><Twitter size={20} /></a>
+            <a href="#" className="text-zinc-500 hover:text-white transition-colors"><Facebook size={20} /></a>
+            <a href="#" className="text-zinc-500 hover:text-white transition-colors"><Instagram size={20} /></a>
           </div>
         </div>
 

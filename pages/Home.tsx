@@ -6,6 +6,22 @@ import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const { t, currentLang } = useLanguage();
+  const [stats, setStats] = React.useState({
+    countries: '4+',
+    projects: '200+',
+    safety: '98%',
+    engineers: '500+',
+    support: '24/7'
+  });
+
+  React.useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.stats) setStats(data.stats);
+      })
+      .catch(err => console.error("Failed to load stats", err));
+  }, []);
 
   const features = [
     { icon: <Cpu size={32} />, title: t.company.values.engineering, desc: t.home.features.engineering },
@@ -39,7 +55,7 @@ const Home: React.FC = () => {
               <div className="space-y-4 pt-8">
                 <img src="https://picsum.photos/seed/factory_interior/400/300" alt="Factory Interior" referrerPolicy="no-referrer" className="rounded-sm object-cover h-48 w-full grayscale hover:grayscale-0 transition-all duration-700" />
                 <div className="bg-zinc-900 p-6 border border-zinc-800 rounded-sm">
-                  <div className="text-3xl font-bold text-corporate-accent mb-1">4+</div>
+                  <div className="text-3xl font-bold text-corporate-accent mb-1">{stats.countries}</div>
                   <div className="text-zinc-500 text-sm">{t.home.stats.countries}</div>
                 </div>
               </div>
@@ -78,19 +94,19 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
             <div>
-              <div className="text-4xl font-bold mb-2">200+</div>
+              <div className="text-4xl font-bold mb-2">{stats.projects}</div>
               <div className="text-blue-100 text-sm uppercase tracking-wide">{t.home.stats.projects}</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">98%</div>
+              <div className="text-4xl font-bold mb-2">{stats.safety}</div>
               <div className="text-blue-100 text-sm uppercase tracking-wide">{t.home.stats.safety}</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">500+</div>
+              <div className="text-4xl font-bold mb-2">{stats.engineers}</div>
               <div className="text-blue-100 text-sm uppercase tracking-wide">{t.home.stats.engineers}</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">24/7</div>
+              <div className="text-4xl font-bold mb-2">{stats.support}</div>
               <div className="text-blue-100 text-sm uppercase tracking-wide">{t.home.stats.support}</div>
             </div>
           </div>
