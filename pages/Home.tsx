@@ -35,11 +35,11 @@ const Home: React.FC = () => {
               </Link>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <img src="https://picsum.photos/id/193/400/500" alt="Industrial Worker" className="rounded-sm object-cover h-full w-full grayscale hover:grayscale-0 transition-all duration-700" />
+              <img src="https://picsum.photos/seed/factory_worker/400/500" alt="Industrial Worker" referrerPolicy="no-referrer" className="rounded-sm object-cover h-full w-full grayscale hover:grayscale-0 transition-all duration-700" />
               <div className="space-y-4 pt-8">
-                <img src="https://picsum.photos/id/250/400/300" alt="Factory Interior" className="rounded-sm object-cover h-48 w-full grayscale hover:grayscale-0 transition-all duration-700" />
+                <img src="https://picsum.photos/seed/factory_interior/400/300" alt="Factory Interior" referrerPolicy="no-referrer" className="rounded-sm object-cover h-48 w-full grayscale hover:grayscale-0 transition-all duration-700" />
                 <div className="bg-zinc-900 p-6 border border-zinc-800 rounded-sm">
-                  <div className="text-3xl font-bold text-corporate-accent mb-1">15+</div>
+                  <div className="text-3xl font-bold text-corporate-accent mb-1">4+</div>
                   <div className="text-zinc-500 text-sm">{t.home.stats.countries}</div>
                 </div>
               </div>

@@ -11,8 +11,9 @@ const Hero: React.FC = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://picsum.photos/id/1031/1920/1080?grayscale&blur=2" 
+          src="https://picsum.photos/seed/industrial_hero/1920/1080?grayscale&blur=2" 
           alt="Industrial Background" 
+          referrerPolicy="no-referrer"
           className="w-full h-full object-cover opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-corporate-dark via-corporate-dark/80 to-transparent"></div>
