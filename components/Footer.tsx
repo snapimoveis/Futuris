@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Link } from 'react-router-dom';
 import { Linkedin, Twitter, Mail, MapPin, Phone, Hexagon } from 'lucide-react';
@@ -6,6 +6,26 @@ import { Linkedin, Twitter, Mail, MapPin, Phone, Hexagon } from 'lucide-react';
 const Footer: React.FC = () => {
   const { currentLang, t } = useLanguage();
   const [logoError, setLogoError] = useState(false);
+  const [contacts, setContacts] = useState({ 
+    address: 'Barcelona, Espanha', 
+    phone: '+34 605 31 89 20', 
+    email: 'info@futurislda.com' 
+  });
+  const [logo, setLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('/api/public-data')
+      .then(res => res.json())
+      .then(data => {
+        if (data.contacts) {
+          setContacts(data.contacts);
+        }
+        if (data.settings && data.settings.logo) {
+          setLogo(data.settings.logo);
+        }
+      })
+      .catch(err => console.error("Failed to load data", err));
+  }, []);
 
   return (
     <footer className="bg-corporate-black border-t border-zinc-900 pt-16 pb-8">
@@ -16,7 +36,7 @@ const Footer: React.FC = () => {
           <div className="mb-6">
             {!logoError ? (
               <img 
-                src="/logo.png" 
+                src={logo || "/logo.png"} 
                 alt="FUTURIS" 
                 className="h-16 w-auto object-contain"
                 onError={() => setLogoError(true)}
@@ -65,15 +85,15 @@ const Footer: React.FC = () => {
           <ul className="space-y-4 text-sm text-zinc-500">
             <li className="flex items-start space-x-3">
               <MapPin size={18} className="mt-0.5 shrink-0" />
-              <span>Barcelona, Espanha</span>
+              <span>{contacts.address}</span>
             </li>
             <li className="flex items-center space-x-3">
               <Phone size={18} />
-              <span>+34 605 31 89 20</span>
+              <span>{contacts.phone}</span>
             </li>
             <li className="flex items-center space-x-3">
               <Mail size={18} />
-              <span>info@futurislda.com</span>
+              <span>{contacts.email}</span>
             </li>
           </ul>
         </div>
@@ -85,6 +105,7 @@ const Footer: React.FC = () => {
           <a href="#" className="hover:text-zinc-400">Privacy Policy</a>
           <a href="#" className="hover:text-zinc-400">Terms of Service</a>
           <a href="#" className="hover:text-zinc-400">Cookies</a>
+          <Link to="/admin/login" className="hover:text-zinc-400">Admin</Link>
         </div>
       </div>
     </footer>

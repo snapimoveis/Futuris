@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
@@ -6,6 +6,22 @@ const Contact: React.FC = () => {
   const { t } = useLanguage();
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
+  const [contacts, setContacts] = useState({ 
+    address: 'Barcelona, Espanha', 
+    phone: '+34 605 31 89 20', 
+    email: 'info@futurislda.com' 
+  });
+
+  useEffect(() => {
+    fetch('/api/public-data')
+      .then(res => res.json())
+      .then(data => {
+        if (data.contacts) {
+          setContacts(data.contacts);
+        }
+      })
+      .catch(err => console.error("Failed to load contacts", err));
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +53,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold mb-1">{t.contact.details.headquarters}</h4>
-                  <p className="text-zinc-400 text-sm">Barcelona, Espanha</p>
+                  <p className="text-zinc-400 text-sm">{contacts.address}</p>
                 </div>
               </div>
 
@@ -47,7 +63,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold mb-1">{t.contact.details.phone}</h4>
-                  <p className="text-zinc-400 text-sm">+34 605 31 89 20</p>
+                  <p className="text-zinc-400 text-sm">{contacts.phone}</p>
                 </div>
               </div>
 
@@ -57,7 +73,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold mb-1">{t.contact.details.email}</h4>
-                  <p className="text-zinc-400 text-sm">info@futurislda.com</p>
+                  <p className="text-zinc-400 text-sm">{contacts.email}</p>
                 </div>
               </div>
             </div>

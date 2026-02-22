@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const { t, currentLang } = useLanguage();
+  const [heroImage, setHeroImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.heroImage) setHeroImage(data.heroImage);
+      })
+      .catch(err => console.error("Failed to load settings", err));
+  }, []);
 
   return (
     <div className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://picsum.photos/seed/industrial_hero/1920/1080?grayscale&blur=2" 
+          src={heroImage || "https://picsum.photos/seed/industrial_hero/1920/1080?grayscale&blur=2"} 
           alt="Industrial Background" 
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover opacity-40"

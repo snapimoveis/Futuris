@@ -1,20 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const News: React.FC = () => {
   const { t, currentLang } = useLanguage();
+  const [newsItems, setNewsItems] = useState<any[]>([]);
 
-  // In a real app, images and IDs would come from a CMS. 
-  // We use the structure from translations but add dummy IDs/Images here for display.
-  const newsDisplay = t.news.items.map((item, index) => ({
-      ...item,
-      id: (index + 1).toString(),
-      // Varied images for demo
-      image: `https://picsum.photos/id/${450 + index * 10}/800/600`,
-      date: new Date().toLocaleDateString(currentLang === 'pt' ? 'pt-PT' : 'es-ES') // Dynamic date for demo
-  }));
+  useEffect(() => {
+    fetch('/api/news')
+      .then(res => res.json())
+      .then(data => {
+        if (data.length > 0) {
+          setNewsItems(data);
+        } else {
+          // Fallback to static data if API is empty
+          const staticNews = t.news.items.map((item, index) => ({
+            ...item,
+            id: (index + 1).toString(),
+            image: `https://picsum.photos/id/${450 + index * 10}/800/600`,
+            date: new Date().toLocaleDateString(currentLang === 'pt' ? 'pt-PT' : 'es-ES')
+          }));
+          setNewsItems(staticNews);
+        }
+      })
+      .catch(() => {
+         // Fallback on error
+         const staticNews = t.news.items.map((item, index) => ({
+            ...item,
+            id: (index + 1).toString(),
+            image: `https://picsum.photos/id/${450 + index * 10}/800/600`,
+            date: new Date().toLocaleDateString(currentLang === 'pt' ? 'pt-PT' : 'es-ES')
+          }));
+          setNewsItems(staticNews);
+      });
+  }, [t.news.items, currentLang]);
 
   return (
     <div className="pt-24 pb-16 min-h-screen">
@@ -24,13 +44,16 @@ const News: React.FC = () => {
         </h1>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {newsDisplay.map((news) => (
+          {newsItems.map((news, index) => (
             <article key={news.id} className="group bg-corporate-gray border border-zinc-800 overflow-hidden hover:border-zinc-600 transition-colors">
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-64 overflow-hidden bg-zinc-800">
                 <img 
-                  src={news.image} 
+                  src={news.image || `https://picsum.photos/id/${450 + index * 10}/800/600`} 
                   alt={news.title} 
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0"
+                  onError={(e) => {
+                    e.currentTarget.src = `https://picsum.photos/id/${450 + index * 10}/800/600`;
+                  }}
                 />
                 <div className="absolute top-4 left-4 bg-corporate-accent text-white text-xs font-bold px-3 py-1 uppercase">
                   {news.category}
@@ -39,7 +62,7 @@ const News: React.FC = () => {
               <div className="p-8">
                 <div className="flex items-center text-zinc-500 text-sm mb-4">
                   <Calendar size={14} className="mr-2" />
-                  {news.date}
+                  {news.date || new Date().toLocaleDateString()}
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-4 group-hover:text-corporate-accent transition-colors">
                   <Link to={`/${currentLang}/noticias/${news.id}`}>{news.title}</Link>

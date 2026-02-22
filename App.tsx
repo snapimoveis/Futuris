@@ -8,6 +8,8 @@ import Clients from './pages/Clients';
 import News from './pages/News';
 import Contact from './pages/Contact';
 import Careers from './pages/Careers';
+import Login from './pages/Admin/Login';
+import Dashboard from './pages/Admin/Dashboard';
 
 // Simple ScrollToTop component
 const ScrollToTop = () => {
@@ -23,6 +25,10 @@ const App: React.FC = () => {
     <HashRouter>
       <ScrollToTop />
       <Routes>
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+
         {/* Redirect root to default language (ES) */}
         <Route path="/" element={<Navigate to="/es" replace />} />
 

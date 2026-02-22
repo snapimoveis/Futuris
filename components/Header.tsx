@@ -9,12 +9,22 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
+  const [logo, setLogo] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
+    
+    // Fetch settings for logo
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.logo) setLogo(data.logo);
+      })
+      .catch(err => console.error("Failed to load settings", err));
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -38,7 +48,7 @@ const Header: React.FC = () => {
         <Link to={`/${currentLang}`} className="flex items-center z-50">
           {!logoError ? (
             <img 
-              src="/logo.png" 
+              src={logo || "/logo.png"} 
               alt="FUTURIS" 
               className="h-14 w-auto object-contain"
               onError={() => setLogoError(true)}

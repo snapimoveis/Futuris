@@ -1,11 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Upload, Briefcase, UserCheck, Clock, MapPin } from 'lucide-react';
 
 const Careers: React.FC = () => {
   const { t } = useLanguage();
   const [file, setFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<'idle' | 'success'>('idle');
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
+  const [status, setStatus] = useState<'idle' | 'success' | 'uploading' | 'error'>('idle');
+  const [jobs, setJobs] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/jobs')
+      .then(res => res.json())
+      .then(data => {
+        if (data && Array.isArray(data) && data.length > 0) {
+          setJobs(data);
+        } else {
+          // Fallback
+          setJobs([
+            { title: t.careers.jobs.mechEng, location: "Barcelona", type: "Full-time" },
+            { title: t.careers.jobs.electrician, location: "Lyon, France", type: "Contract" },
+            { title: t.careers.jobs.safety, location: "Lisbon, Portugal", type: "Full-time" },
+          ]);
+        }
+      })
+      .catch(() => {
+          setJobs([
+            { title: t.careers.jobs.mechEng, location: "Barcelona", type: "Full-time" },
+            { title: t.careers.jobs.electrician, location: "Lyon, France", type: "Contract" },
+            { title: t.careers.jobs.safety, location: "Lisbon, Portugal", type: "Full-time" },
+          ]);
+      });
+  }, [t.careers.jobs]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -13,24 +39,40 @@ const Careers: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (file) {
-      console.log("Uploading CV:", file.name);
-      setStatus('success');
-      setTimeout(() => {
-        setFile(null);
-        setStatus('idle');
-        alert("Application simulated successfuly!");
-      }, 1000);
-    }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const jobs = [
-    { title: t.careers.jobs.mechEng, location: "Barcelona", type: "Full-time" },
-    { title: t.careers.jobs.electrician, location: "Lyon, France", type: "Contract" },
-    { title: t.careers.jobs.safety, location: "Lisbon, Portugal", type: "Full-time" },
-  ];
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (file) {
+      setStatus('uploading');
+      const data = new FormData();
+      data.append('cv', file);
+      data.append('firstName', formData.firstName);
+      data.append('lastName', formData.lastName);
+      data.append('email', formData.email);
+      
+      try {
+        const res = await fetch('/api/upload-cv', {
+          method: 'POST',
+          body: data
+        });
+        
+        if (res.ok) {
+          setStatus('success');
+          setFile(null);
+          setFormData({ firstName: '', lastName: '', email: '' });
+          setTimeout(() => setStatus('idle'), 3000);
+        } else {
+          setStatus('error');
+        }
+      } catch (err) {
+        setStatus('error');
+      }
+    }
+  };
 
   return (
     <div className="pt-24 pb-16">
@@ -73,20 +115,47 @@ const Careers: React.FC = () => {
           <div>
             <h2 className="text-2xl font-bold text-white mb-8">{t.careers.spontaneous}</h2>
             <div className="bg-corporate-gray border border-zinc-800 p-8 rounded-sm">
+               {status === 'success' ? (
+                 <div className="text-center py-8">
+                   <div className="text-green-500 text-xl font-bold mb-2">Application Sent!</div>
+                   <p className="text-zinc-400">Thank you for your interest.</p>
+                 </div>
+               ) : (
                <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-2 gap-4">
                      <div>
                         <label className="block text-xs uppercase text-zinc-500 mb-2">{t.careers.form.firstName}</label>
-                        <input type="text" className="w-full bg-zinc-900 border border-zinc-700 text-white px-3 py-2 focus:border-corporate-accent outline-none" />
+                        <input 
+                          type="text" 
+                          name="firstName"
+                          value={formData.firstName}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full bg-zinc-900 border border-zinc-700 text-white px-3 py-2 focus:border-corporate-accent outline-none" 
+                        />
                      </div>
                      <div>
                         <label className="block text-xs uppercase text-zinc-500 mb-2">{t.careers.form.lastName}</label>
-                        <input type="text" className="w-full bg-zinc-900 border border-zinc-700 text-white px-3 py-2 focus:border-corporate-accent outline-none" />
+                        <input 
+                          type="text" 
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full bg-zinc-900 border border-zinc-700 text-white px-3 py-2 focus:border-corporate-accent outline-none" 
+                        />
                      </div>
                   </div>
                   <div>
                       <label className="block text-xs uppercase text-zinc-500 mb-2">{t.careers.form.email}</label>
-                      <input type="email" className="w-full bg-zinc-900 border border-zinc-700 text-white px-3 py-2 focus:border-corporate-accent outline-none" />
+                      <input 
+                        type="email" 
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full bg-zinc-900 border border-zinc-700 text-white px-3 py-2 focus:border-corporate-accent outline-none" 
+                      />
                   </div>
                   
                   {/* File Upload */}
@@ -107,12 +176,14 @@ const Careers: React.FC = () => {
 
                   <button 
                     type="submit"
-                    disabled={!file}
+                    disabled={!file || status === 'uploading'}
                     className="w-full bg-corporate-accent text-white font-bold py-3 hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {t.careers.apply}
+                    {status === 'uploading' ? 'Uploading...' : t.careers.apply}
                   </button>
+                  {status === 'error' && <p className="text-red-500 text-sm text-center">Upload failed. Please try again.</p>}
                </form>
+               )}
             </div>
           </div>
        </div>
