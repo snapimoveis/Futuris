@@ -37,7 +37,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold mb-1">{t.contact.details.headquarters}</h4>
-                  <p className="text-zinc-400 text-sm">Polígono Industrial Zona Franca,<br />Carrer D, 08040 Barcelona, España</p>
+                  <p className="text-zinc-400 text-sm">Barcelona, Espanha</p>
                 </div>
               </div>
 
@@ -47,8 +47,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold mb-1">{t.contact.details.phone}</h4>
-                  <p className="text-zinc-400 text-sm">+34 93 123 45 67 ({t.contact.details.mainOffice})</p>
-                  <p className="text-zinc-400 text-sm">+34 900 00 00 00 ({t.contact.details.support247})</p>
+                  <p className="text-zinc-400 text-sm">+34 605 31 89 20</p>
                 </div>
               </div>
 
@@ -58,8 +57,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold mb-1">{t.contact.details.email}</h4>
-                  <p className="text-zinc-400 text-sm">info@futuris.corp</p>
-                  <p className="text-zinc-400 text-sm">careers@futuris.corp</p>
+                  <p className="text-zinc-400 text-sm">info@futurislda.com</p>
                 </div>
               </div>
             </div>

@@ -65,15 +65,15 @@ const Footer: React.FC = () => {
           <ul className="space-y-4 text-sm text-zinc-500">
             <li className="flex items-start space-x-3">
               <MapPin size={18} className="mt-0.5 shrink-0" />
-              <span>Polígono Industrial Zona Franca,<br />Carrer D, 08040 Barcelona, España</span>
+              <span>Barcelona, Espanha</span>
             </li>
             <li className="flex items-center space-x-3">
               <Phone size={18} />
-              <span>+34 93 123 45 67</span>
+              <span>+34 605 31 89 20</span>
             </li>
             <li className="flex items-center space-x-3">
               <Mail size={18} />
-              <span>info@futuris.corp</span>
+              <span>info@futurislda.com</span>
             </li>
           </ul>
         </div>
